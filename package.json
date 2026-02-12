@@ -5,9 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "lint": "eslint",
-    "prettier": "prettier --write src/**/*.js"
+    "start": "tsx watch src/server.js",
+    "lint": "eslint . --ext .ts,.js",
+    "prettier": "prettier --write src/**/*.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -25,11 +26,18 @@
     "mongoose": "^9.1.5"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
-    "globals": "^17.1.0",
+    "globals": "^17.2.0",
     "nodemon": "^3.1.11",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

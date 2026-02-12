@@ -1,41 +1,54 @@
-import eslint from '@eslint/js';
-import prettierConfig from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
-import globals from 'globals';
+// const tsPlugin = require("@typescript-eslint/eslint-plugin");
+// const prettierConfig = require("eslint-config-prettier");
+// const importPlugin = require("eslint-plugin-import");
+// const globals = require("globals");
+// const tsParser = require("@typescript-eslint/parser");
+
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import prettierConfig from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
+import globals from "globals";
+import tsParser from "@typescript-eslint/parser";
 
 export default [
-    eslint.configs.recommended,
     {
-        files: ['**/*.js'],
+        files: ["**/*.ts", "**/*.tsx"],
         languageOptions: {
-            ecmaVersion: 'latest',
-            sourceType: 'module',
+            parser: tsParser,
+            parserOptions: {
+                ecmaVersion: "latest",
+                sourceType: "module",
+            },
             globals: {
                 ...globals.node,
-                ...globals.es2021
-            }
+                ...globals.es2021,
+            },
         },
         plugins: {
+            "@typescript-eslint": tsPlugin,
             import: importPlugin,
         },
+        settings: {
+            "import/resolver": {
+                typescript: {
+                    project: "./tsconfig.json",
+                },
+            },
+        },
         rules: {
-            // Enforce import/export syntax
-            'import/no-unresolved': 'error',
-            'import/named': 'error',
-            'import/default': 'error',
-            'import/export': 'error',
+            "@typescript-eslint/no-unused-vars": ["error"],
+            "@typescript-eslint/no-use-before-define": "error",
+            "@typescript-eslint/explicit-function-return-type": "off",
 
-            // Prevent usage of variables before they are defined
-            'no-use-before-define': 'error',
+            "import/no-unresolved": "error",
+            "import/named": "error",
+            "import/default": "error",
+            "import/export": "error",
 
-            // Enforce consistent quote style (single quotes)
-            'quotes': ['error', 'single', { 'avoidEscape': true }],
-
-            // Require semicolons
-            'semi': ['error', 'always'],
-
-            // Disallow unused variables
-            'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
+            quotes: ["error", "single", { avoidEscape: true }],
+            semi: ["error", "always"],
+            "no-unused-vars": "off",
+            "no-use-before-define": "off",
         },
     },
     prettierConfig,

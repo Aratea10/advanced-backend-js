@@ -1,10 +1,11 @@
 import express from "express";
-import { Product } from "./product.js";
+import { Product } from "./product";
 
 const productRouter = express.Router();
 
 productRouter.get("/", async (request, response) => {
     const products = await Product.find();
+
     response.json({ content: products });
 });
 
