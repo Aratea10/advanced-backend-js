@@ -1,23 +1,32 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { Product } from './product.js'
+import productRouter from './product.routes.js';
 
-const app = express();
-
-try {
+const connectMongoDb = async () => {
     await mongoose.connect('mongodb://admin:admin123@localhost:27017/db?authSource=admin');
     console.log('mongodb connected =)');
-
-} catch (error) {
-    console.log("mongodb error: ", error);
 }
 
-app.get('/products', async (request, response) => {
-    const products = await Product.find()
+const startHttpApi = () => {
+    const app = express();
+    app.use(express.json())
 
-    response.json({ content: products })
-})
+    app.use('/products', productRouter);
 
-app.listen(3000, () => {
-    console.log("up & running on port: ", 3000);
-})
+    app.listen(3000, () => {
+        console.log("API up & running on port: ", 3000);
+    })
+}
+
+const executeApp = async () => {
+
+    try {
+        await connectMongoDb();
+        startHttpApi();
+    } catch (error) {
+        console.log('unable to start application: ', error);
+        process.exit(1);
+    }
+}
+
+executeApp();
