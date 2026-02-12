@@ -1,5 +1,4 @@
-import express, { request } from 'express'
-import { Product } from './product.js'
+import express from 'express'
 
 const productRouter = express.Router();
 
@@ -28,7 +27,7 @@ productRouter.post('/', async (request, response) => {
 
     if (!name || !description) {
         response.status(400).json({
-            message: 'name and description have to be defined'
+            message: "name and description have to be defined"
         })
     }
 

@@ -5,7 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "lint": "eslint",
+    "prettier": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,11 @@
     "mongoose": "^9.1.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.1.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1"
   }
 }
