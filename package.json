@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon src/server.js",
     "lint": "eslint",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write src/**/*.js"
   },
   "repository": {
     "type": "git",
