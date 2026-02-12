@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/Aratea10/advanced-backend-js/issues"
   },
-  "homepage": "https://github.com/Aratea10/advanced-backend-js#readme"
+  "homepage": "https://github.com/Aratea10/advanced-backend-js#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5"
+  }
 }
