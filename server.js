@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import { Product } from './product.js'
 
 const app = express();
 
@@ -11,10 +12,10 @@ try {
     console.log("mongodb error: ", error);
 }
 
-app.get('/example', (request, response) => {
-    response.json({
-        info: "first endpoint"
-    })
+app.get('/products', async (request, response) => {
+    const products = await Product.find()
+
+    response.json({ content: products })
 })
 
 app.listen(3000, () => {
