@@ -34,3 +34,28 @@ describe("GET /products/:id", () => {
         });
     });
 });
+
+describe("GET /products", () => {
+    test("Should return a list of products", async () => {
+        await request(app).post("/products").send({
+            name: "product1",
+            description: "description1",
+        });
+        await request(app).post("/products").send({
+            name: "product2",
+            description: "description2",
+        });
+
+        const response = await request(app).get("/products").send();
+
+        expect(response.body.content.length).toBe(2);
+        expect(response.body.content[0].name).toEqual("product1");
+        expect(response.body.content[1].name).toEqual("product2");
+    });
+
+    test("Should return an empty array when there are no products", async () => {
+        const response = await request(app).get("/products").send();
+
+        expect(response.body.content.length).toBe(0);
+    });
+});
