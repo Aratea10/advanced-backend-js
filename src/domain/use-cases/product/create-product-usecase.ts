@@ -1,5 +1,4 @@
 import { ProductRepository } from './../../repositories/ProductRepository';
-import { Product } from '../../entities/Product';
 
 export class CreateProductUseCase {
     readonly productRepository: ProductRepository;
