@@ -14,6 +14,7 @@ const ProductSchema = new mongoose.Schema<ProductMongoDb>(
         name: {
             type: String,
             required: true,
+            index: true,
         },
         description: {
             type: String,

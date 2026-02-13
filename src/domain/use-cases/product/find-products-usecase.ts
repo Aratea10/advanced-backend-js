@@ -1,5 +1,5 @@
 import { ProductRepository } from '../../repositories/ProductRepository';
-import { Pagination } from '../../types/Pagination';
+import { ProductFindQuery } from '../../types/product/ProductFindQuery';
 
 export class FindProductsUseCase {
     private readonly productRepository: ProductRepository;
@@ -8,8 +8,8 @@ export class FindProductsUseCase {
         this.productRepository = productRepository;
     }
 
-    async execute({ page, limit }: Pagination) {
-        const products = await this.productRepository.findMany({ page, limit });
+    async execute(query: ProductFindQuery) {
+        const products = await this.productRepository.findMany({ ...query });
 
         return products;
     }

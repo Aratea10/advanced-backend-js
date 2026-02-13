@@ -6,15 +6,16 @@ import * as z from 'zod';
 const findProductsValidator = z.object({
     page: z.coerce.number(),
     limit: z.coerce.number().max(100),
+    search: z.string().min(3).optional(),
 });
 
 export const findProductsController = async (request: Request, response: Response) => {
-    const { page, limit } = findProductsValidator.parse(request.query);
+    const { page, limit, search } = findProductsValidator.parse(request.query);
 
     const productMongoDbRepository = new ProductMongodbRepository();
     const findProductsUseCase = new FindProductsUseCase(productMongoDbRepository);
 
-    const products = await findProductsUseCase.execute({ page, limit });
+    const products = await findProductsUseCase.execute({ page, limit, name: search });
 
     response.json({ content: products });
 };
