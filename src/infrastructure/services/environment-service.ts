@@ -9,6 +9,7 @@ const environmentVariablesValidator = z.object({
     MONGO_HOST: z.string(),
     JWT_SECRET: z.string(),
     SENTRY_DSN: z.url(),
+    MAILTRAP_TOKEN: z.string(),
 });
 
 type EnvironmentVariables = z.infer<typeof environmentVariablesValidator>;
