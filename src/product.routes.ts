@@ -1,15 +1,15 @@
-import express from "express";
-import { Product } from "./product";
+import express from 'express';
+import { Product } from './product';
 
 const productRouter = express.Router();
 
-productRouter.get("/", async (request, response) => {
+productRouter.get('/', async (request, response) => {
     const products = await Product.find();
 
     response.json({ content: products });
 });
 
-productRouter.get("/:productId", async (request, response) => {
+productRouter.get('/:productId', async (request, response) => {
     const { productId } = request.params;
 
     const product = await Product.findById(productId);
@@ -18,17 +18,17 @@ productRouter.get("/:productId", async (request, response) => {
         response.json({ content: product });
     } else {
         response.status(404).json({
-            message: "Product not found",
+            message: 'Product not found',
         });
     }
 });
 
-productRouter.post("/", async (request, response) => {
+productRouter.post('/', async (request, response) => {
     const { name, description } = request.body;
 
     if (!name || !description) {
         response.status(400).json({
-            message: "name and description have to be defined",
+            message: 'name and description have to be defined',
         });
     }
 
@@ -44,7 +44,7 @@ productRouter.post("/", async (request, response) => {
     });
 });
 
-productRouter.patch("/:productId", async (request, response) => {
+productRouter.patch('/:productId', async (request, response) => {
     const { productId } = request.params;
     const { name, description } = request.body;
 
@@ -58,7 +58,7 @@ productRouter.patch("/:productId", async (request, response) => {
 
     if (!updatedProduct) {
         response.status(404).json({
-            message: "Product not found",
+            message: 'Product not found',
         });
     } else {
         response.json({
@@ -67,18 +67,18 @@ productRouter.patch("/:productId", async (request, response) => {
     }
 });
 
-productRouter.delete("/:productId", async (request, response) => {
+productRouter.delete('/:productId', async (request, response) => {
     const { productId } = request.params;
 
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
     if (!deletedProduct) {
         response.status(404).json({
-            message: "Product not found",
+            message: 'Product not found',
         });
     } else {
         response.json({
-            message: "Product removed succesful",
+            message: 'Product removed succesful',
         });
     }
 });

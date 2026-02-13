@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "tsx watch src/server.js",
-    "lint": "eslint . --ext .ts,.js",
-    "prettier": "prettier --write src/**/*.js",
+    "lint": "eslint src --ext .ts",
+    "prettier": "prettier --write src/**/*.ts",
     "build": "tsc",
     "test:e2e": "jest"
   },
@@ -33,7 +33,7 @@
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
-    "eslint": "^9.39.2",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
