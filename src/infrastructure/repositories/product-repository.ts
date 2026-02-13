@@ -1,5 +1,6 @@
+import { Product } from '../../domain/entities/Product';
 import { ProductRepository } from '../../domain/repositories/ProductRepository';
-import { ProductModel } from '../../product';
+import { ProductModel } from '../models/product-model';
 
 export class ProductMongodbRepository implements ProductRepository {
     async createOne({ name, description }: { name: string; description: string }) {
@@ -8,6 +9,13 @@ export class ProductMongodbRepository implements ProductRepository {
             description,
         });
 
-        await newProduct.save();
+        const createdProduct = await newProduct.save();
+
+        return new Product({
+            id: createdProduct._id.toString(),
+            name: createdProduct.name,
+            description: createdProduct.description,
+            createdAt: createdProduct.createdAt,
+        });
     }
 }

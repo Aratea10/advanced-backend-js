@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../api';
+import { app } from '../../ui/api';
 
 describe('GET /products/:id', () => {
     test('Should return a 404 if product does not exist', async () => {

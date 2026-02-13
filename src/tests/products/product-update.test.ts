@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../api';
+import { app } from '../../ui/api';
 
 describe('PATH /products/:productId', () => {
     test('given a non existing product, return a 404 not found', async () => {

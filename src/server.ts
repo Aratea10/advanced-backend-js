@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { startHttpApi } from './api';
+import { startHttpApi } from './ui/api';
 
 const connectMongoDb = async () => {
     console.log('Connecting to mongodb...');
@@ -17,4 +17,4 @@ const executeApp = async () => {
     }
 };
 
-executeApp();
+void executeApp();

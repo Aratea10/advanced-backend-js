@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../api';
+import { app } from '../../ui/api';
 import { createRandomProduct } from './helpers';
 
 describe('DELETE /product/:productId', () => {

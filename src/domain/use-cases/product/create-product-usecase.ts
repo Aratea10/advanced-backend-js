@@ -8,18 +8,12 @@ export class CreateProductUseCase {
     }
 
     public async execute({ name, description }: { name: string; description: string }) {
-        // todo lo relacionado con la creación de producto.
-
-        // creación de Entidad producto (el de dominio)
-        const newProduct = new Product({
-            name,
-            description,
-        });
-
         // hay que guardar el producto
-        await this.productRepository.createOne({
+        const createdProduct = await this.productRepository.createOne({
             name,
             description,
         });
+
+        return createdProduct;
     }
 }

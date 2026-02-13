@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../api';
+import { app } from '../../ui/api';
 
 describe('POST /products/:id', () => {
     test('Given no name or description, endpoint should return a 400 error', async () => {
@@ -17,5 +17,6 @@ describe('POST /products/:id', () => {
         });
 
         expect(response.status).toBe(201);
+        expect(response.body.content.createdAt).toBeDefined();
     });
 });

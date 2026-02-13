@@ -1,5 +1,6 @@
 import express from 'express';
-import { ProductModel } from './product';
+import { ProductModel } from '../../infrastructure/models/product-model';
+import { createProductcontroller } from '../controllers/product/create-product-controller';
 
 const productRouter = express.Router();
 
@@ -23,26 +24,7 @@ productRouter.get('/:productId', async (request, response) => {
     }
 });
 
-productRouter.post('/', async (request, response) => {
-    const { name, description } = request.body;
-
-    if (!name || !description) {
-        response.status(400).json({
-            message: 'name and description have to be defined',
-        });
-    }
-
-    const newProduct = new ProductModel({
-        name,
-        description,
-    });
-
-    const productDb = await newProduct.save();
-
-    response.status(201).json({
-        content: productDb,
-    });
-});
+productRouter.post('/', createProductcontroller);
 
 productRouter.patch('/:productId', async (request, response) => {
     const { productId } = request.params;
