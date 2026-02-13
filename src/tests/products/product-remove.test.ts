@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../api';
+import { createRandomProduct } from './helpers';
 
 describe('DELETE /product/:productId', () => {
     test('Given a non existing product, return a 404 not found status code', async () => {
@@ -9,11 +10,10 @@ describe('DELETE /product/:productId', () => {
     });
 
     test('Given an existing product, delete it', async () => {
-        const newProductResponse = await request(app).post('/products').send({
-            name: 'product1',
-            description: 'random description',
-        });
-        const createdProduct = newProductResponse.body.content;
+        const randomProductResponse = await createRandomProduct();
+        const createdProduct = randomProductResponse.body.content;
+
+        console.log(createdProduct);
 
         const removeProductResponse = await request(app)
             .delete(`/products/${createdProduct._id}`)
