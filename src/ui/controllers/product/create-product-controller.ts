@@ -15,8 +15,8 @@ export const createProductcontroller = async (request: Request, response: Respon
 
     // desencadenar toda la lógica de creación de producto
     const productMongodbRepository = new ProductMongodbRepository();
-    const productMemoryRepository = new ProductMemoryRepository();
-    const createProductUseCase = new CreateProductUseCase(productMemoryRepository);
+    // const productMemoryRepository = new ProductMemoryRepository();
+    const createProductUseCase = new CreateProductUseCase(productMongodbRepository);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const createdProduct = await createProductUseCase.execute({ name, description });

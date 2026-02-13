@@ -18,4 +18,18 @@ export class ProductMongodbRepository implements ProductRepository {
             createdAt: createdProduct.createdAt,
         });
     }
+
+    async findMany(): Promise<Product[]> {
+        const mongoProducts = await ProductModel.find();
+
+        return mongoProducts.map(
+            mongoProduct =>
+                new Product({
+                    id: mongoProduct._id.toString(),
+                    name: mongoProduct.name,
+                    description: mongoProduct.description,
+                    createdAt: mongoProduct.createdAt,
+                })
+        );
+    }
 }

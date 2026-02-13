@@ -1,14 +1,11 @@
 import express from 'express';
 import { ProductModel } from '../../infrastructure/models/product-model';
 import { createProductcontroller } from '../controllers/product/create-product-controller';
+import { findProductsController } from '../controllers/product/find-products-controller';
 
 const productRouter = express.Router();
 
-productRouter.get('/', async (request, response) => {
-    const products = await ProductModel.find();
-
-    response.json({ content: products });
-});
+productRouter.get('/', findProductsController);
 
 productRouter.get('/:productId', async (request, response) => {
     const { productId } = request.params;

@@ -7,6 +7,9 @@ export class ProductMemoryRepository implements ProductRepository {
     constructor() {
         this.products = [];
     }
+    findMany(): Promise<Product[]> {
+        return Promise.resolve([]);
+    }
     createOne({ name, description }: { name: string; description: string }): Promise<Product> {
         const product = new Product({
             name,
