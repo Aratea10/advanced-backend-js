@@ -6,4 +6,5 @@ export interface ProductRepository {
     findMany(): Promise<Product[]>;
     findById(productId: string): Promise<Product | null>;
     updateOne(productId: string, query: ProductUpdateQuery): Promise<Product | null>;
+    removeById(productId: string): Promise<boolean>;
 }

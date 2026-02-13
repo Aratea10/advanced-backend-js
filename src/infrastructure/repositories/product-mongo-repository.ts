@@ -65,4 +65,10 @@ export class ProductMongodbRepository implements ProductRepository {
             });
         }
     }
+
+    async removeById(productId: string): Promise<boolean> {
+        const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+
+        return deletedProduct ? true : false;
+    }
 }

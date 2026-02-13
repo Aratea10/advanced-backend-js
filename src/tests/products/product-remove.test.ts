@@ -13,15 +13,13 @@ describe('DELETE /product/:productId', () => {
         const randomProductResponse = await createRandomProduct();
         const createdProduct = randomProductResponse.body.content;
 
-        console.log(createdProduct);
-
         const removeProductResponse = await request(app)
-            .delete(`/products/${createdProduct._id}`)
+            .delete(`/products/${createdProduct.id}`)
             .send();
 
         expect(removeProductResponse.status).toBe(200);
 
-        const findProductResponse = await request(app).get(`/products/${createdProduct._id}`).send();
+        const findProductResponse = await request(app).get(`/products/${createdProduct.id}`).send();
 
         expect(findProductResponse.status).toBe(404);
     });
