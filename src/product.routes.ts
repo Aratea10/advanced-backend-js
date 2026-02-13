@@ -1,10 +1,10 @@
 import express from 'express';
-import { Product } from './product';
+import { ProductModel } from './product';
 
 const productRouter = express.Router();
 
 productRouter.get('/', async (request, response) => {
-    const products = await Product.find();
+    const products = await ProductModel.find();
 
     response.json({ content: products });
 });
@@ -12,7 +12,7 @@ productRouter.get('/', async (request, response) => {
 productRouter.get('/:productId', async (request, response) => {
     const { productId } = request.params;
 
-    const product = await Product.findById(productId);
+    const product = await ProductModel.findById(productId);
 
     if (product) {
         response.json({ content: product });
@@ -32,7 +32,7 @@ productRouter.post('/', async (request, response) => {
         });
     }
 
-    const newProduct = new Product({
+    const newProduct = new ProductModel({
         name,
         description,
     });
@@ -48,12 +48,12 @@ productRouter.patch('/:productId', async (request, response) => {
     const { productId } = request.params;
     const { name, description } = request.body;
 
-    const updatedProduct = await Product.findByIdAndUpdate(
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
         productId,
         { name, description },
         {
             new: true,
-        },
+        }
     );
 
     if (!updatedProduct) {
@@ -70,7 +70,7 @@ productRouter.patch('/:productId', async (request, response) => {
 productRouter.delete('/:productId', async (request, response) => {
     const { productId } = request.params;
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
 
     if (!deletedProduct) {
         response.status(404).json({
