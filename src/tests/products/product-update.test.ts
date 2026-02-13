@@ -58,11 +58,11 @@ describe('PATH /products/:productId', () => {
         const createdProduct = randomProductResponse.body.content;
         const token = await signupAndLogin('another-user@domain.com', '1234567890');
 
-        const removeProductResponse = await request(app)
-            .delete(`/products/${createdProduct.id}`)
+        const updateProductResponse = await request(app)
+            .patch(`/products/${createdProduct.id}`)
             .set('Authorization', `Bearer ${token}`)
-            .send();
+            .send({});
 
-        expect(removeProductResponse.status).toBe(404);
+        expect(updateProductResponse.status).toBe(404);
     });
 });
