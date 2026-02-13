@@ -1,5 +1,6 @@
 import { Product } from '../../domain/entities/Product';
 import { ProductRepository } from '../../domain/repositories/ProductRepository';
+import { Pagination } from '../../domain/types/Pagination';
 import { ProductCreationQuery } from '../../domain/types/product/ProductCreationQuery';
 import { ProductUpdateQuery } from '../../domain/types/product/ProductUpdateQuery';
 import { ProductModel, ProductMongoDb } from '../models/product-model';
@@ -17,8 +18,10 @@ export class ProductMongodbRepository implements ProductRepository {
         return this.restoreProduct(createdProduct);
     }
 
-    async findMany(): Promise<Product[]> {
-        const mongoProducts = await ProductModel.find();
+    async findMany({ page, limit }: Pagination): Promise<Product[]> {
+        const skip = (page - 1) * limit;
+
+        const mongoProducts = await ProductModel.find().skip(skip).limit(limit);
 
         return mongoProducts.map(mongoProduct => this.restoreProduct(mongoProduct));
     }
