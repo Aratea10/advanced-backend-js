@@ -13,7 +13,7 @@ export class MailtrapService implements EmailService {
 
     async sendEmail(email: string, message: string, subject: string): Promise<void> {
         await this.mailtrapClient.send({
-            from: { name: 'Mailtrap Test', email: 'sandbox@example.com' },
+            from: { name: 'Mailtrap Test', email: 'hello@demomailtrap.co' },
             to: [{ email }],
             subject,
             text: message,
