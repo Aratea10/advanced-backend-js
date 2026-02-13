@@ -1,10 +1,16 @@
+import { environmentService } from './environment-service';
 import bcrypt from 'bcryptjs';
 import { SecurityService } from '../../domain/services/SecurityService';
 import { User } from '../../domain/entities/User';
 import jwt from 'jsonwebtoken';
 
 export class SecurityBcryptService implements SecurityService {
-    private readonly jwtSecret: string = 'kjbfdfs09jfsdi0fnfn20f';
+    private readonly jwtSecret: string;
+
+    constructor() {
+        const { JWT_SECRET } = environmentService.get();
+        this.jwtSecret = JWT_SECRET;
+    }
     async hashPassword(password: string): Promise<string> {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);

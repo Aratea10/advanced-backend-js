@@ -1,7 +1,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import { environmentService } from '../infrastructure/services/environment-service';
 
 let mongo: MongoMemoryServer;
+environmentService.load();
 
 // 1 vez antes de todos los tests
 beforeAll(async () => {

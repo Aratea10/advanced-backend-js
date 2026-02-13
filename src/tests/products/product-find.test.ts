@@ -14,9 +14,9 @@ describe('GET /products/:id', () => {
 
     test('Given an existing product, return it', async () => {
         // tengo que crear un producto y guardarme su id
-        const createdProductResponse = await createRandomProduct();
+        const { newProductResponse } = await createRandomProduct();
 
-        const createdProduct = createdProductResponse.body.content;
+        const createdProduct = newProductResponse.body.content;
         const productId = createdProduct.id;
         // petición de ese producto
         const response = await request(app).get(`/products/${productId}`).send();
@@ -34,20 +34,15 @@ describe('GET /products/:id', () => {
 
 describe('GET /products', () => {
     test('Should return a list of products', async () => {
-        await request(app).post('/products').send({
-            name: 'product1',
-            description: 'description1',
-        });
-        await request(app).post('/products').send({
-            name: 'product2',
-            description: 'description2',
-        });
+        const emptyResponse = await request(app).get('/products').send();
+        expect(emptyResponse.body.content.length).toBe(0);
+
+        await createRandomProduct();
+        await createRandomProduct();
 
         const response = await request(app).get('/products').send();
 
         expect(response.body.content.length).toBe(2);
-        expect(response.body.content[0].name).toEqual('product1');
-        expect(response.body.content[1].name).toEqual('product2');
     });
 
     test('Should return an empty array when there are no products', async () => {
