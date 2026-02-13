@@ -1,5 +1,6 @@
 import { Product } from '../../entities/Product';
 import { ProductRepository } from '../../repositories/ProductRepository';
+import { EntityNotFoundError, ForbiddenOperationError } from '../../types/errors';
 import { ProductUpdateQuery } from '../../types/product/ProductUpdateQuery';
 
 export class UpdateProductUseCase {
@@ -17,7 +18,7 @@ export class UpdateProductUseCase {
         const productToUpdate = await this.productRepository.findById(productId);
 
         if (!productToUpdate) {
-            throw new Error('product not found');
+            throw new EntityNotFoundError('Product', productId);
         }
 
         if (userId === productToUpdate.ownerId) {
@@ -25,7 +26,7 @@ export class UpdateProductUseCase {
 
             return createdProduct;
         } else {
-            throw new Error('Forbidden operation');
+            throw new ForbiddenOperationError('Only owner of the product can update this product');
         }
     }
 }

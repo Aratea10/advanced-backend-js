@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { SecurityBcryptService } from '../../infrastructure/services/security-bcrypt-service';
+import { UnauthorizedError } from '../../domain/types/errors';
 
 export const authenticationMiddleware = (
     request: Request,
@@ -10,23 +11,15 @@ export const authenticationMiddleware = (
     const authenticationHeader = request.headers.authorization; // Bearer eyfdfspdfnsf
     const token = authenticationHeader?.split(' ')[1];
     if (!token) {
-        response.status(401).json({
-            message: 'Token not available',
-        });
-        return;
+        throw new UnauthorizedError(`Error getting jwt token from Authorization header`);
     }
     // verificar si el token es de confianza
     const securityService = new SecurityBcryptService();
-    try {
-        const data = securityService.verifyJWT(token);
-        request.user = {
-            id: data.userId,
-        };
-    } catch (error) {
-        response.status(401).json({
-            message: 'Token not valid',
-        });
-    }
+
+    const data = securityService.verifyJWT(token);
+    request.user = {
+        id: data.userId,
+    };
 
     next();
 };

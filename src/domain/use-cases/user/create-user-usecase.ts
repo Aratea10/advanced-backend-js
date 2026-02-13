@@ -1,6 +1,7 @@
 import { UserRepository } from '../../repositories/UserRepository';
 import { UserCreationQuery } from '../../types/user/UserCreationQuery';
 import { SecurityService } from '../../services/SecurityService';
+import { BusinessConflictError } from '../../types/errors';
 
 export class CreateUserUseCase {
     private readonly userRepository: UserRepository;
@@ -15,7 +16,7 @@ export class CreateUserUseCase {
         const user = await this.userRepository.findByEmail(query.email);
 
         if (user) {
-            throw new Error('El usuario ya existe');
+            throw new BusinessConflictError('User already exist');
         }
 
         // hay que hashear la contraseña

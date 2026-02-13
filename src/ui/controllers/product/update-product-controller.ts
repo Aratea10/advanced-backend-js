@@ -24,21 +24,16 @@ export const updateProductController = async (request: Request, response: Respon
     const productMongoDbRepository = new ProductMongodbRepository();
     const updateProductUseCase = new UpdateProductUseCase(productMongoDbRepository);
 
-    try {
-        const updatedProduct = await updateProductUseCase.execute(
-            productId,
-            {
-                name,
-                description,
-            },
-            userId
-        );
-        response.json({
-            content: updatedProduct,
-        });
-    } catch (error) {
-        response.status(404).json({
-            message: 'Product not found',
-        });
-    }
+    const updatedProduct = await updateProductUseCase.execute(
+        productId,
+        {
+            name,
+            description,
+        },
+        userId
+    );
+
+    response.json({
+        content: updatedProduct,
+    });
 };

@@ -1,5 +1,6 @@
 import { SecurityService } from './../../services/SecurityService';
 import { UserRepository } from '../../repositories/UserRepository';
+import { EntityNotFoundError } from '../../types/errors';
 
 export class LoginUserUseCase {
     private readonly userRepository: UserRepository;
@@ -21,23 +22,17 @@ export class LoginUserUseCase {
         const existingUser = await this.userRepository.findByEmail(email);
 
         if (!existingUser) {
-            throw new Error('El usuario no existe');
+            throw new EntityNotFoundError('User', email);
         }
 
         // comparar las constraseñas
-        const arePasswordsEqual = await this.securityService.comparePasswords(
-            password,
-            existingUser.password
-        );
-        if (arePasswordsEqual) {
-            // generar un jwt
-            const token = this.securityService.generateJWT(existingUser);
+        await this.securityService.comparePasswords(password, existingUser.password);
 
-            return {
-                token,
-            };
-        } else {
-            throw new Error('Contraseña errónea');
-        }
+        // generar un jwt
+        const token = this.securityService.generateJWT(existingUser);
+
+        return {
+            token,
+        };
     }
 }

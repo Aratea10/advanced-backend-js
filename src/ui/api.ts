@@ -3,6 +3,7 @@ import express from 'express';
 import productRouter from './routes/product-routes';
 import authenticationRouter from './routes/authentication-routes';
 import { environmentService } from '../infrastructure/services/environment-service';
+import { errorHandlerMiddleware } from './middlewares/error-handler-middleware';
 
 declare global {
     namespace Express {
@@ -19,6 +20,9 @@ app.use(express.json());
 
 app.use('/products', productRouter);
 app.use('/authentication', authenticationRouter);
+
+// importantísimo!!! el middleware de errores va SIEMPRE el último
+app.use(errorHandlerMiddleware);
 
 export const startHttpApi = () => {
     const { API_PORT } = environmentService.get();

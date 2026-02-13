@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { SecurityService } from '../../domain/services/SecurityService';
 import { User } from '../../domain/entities/User';
 import jwt from 'jsonwebtoken';
+import { UnauthorizedError } from '../../domain/types/errors';
 
 export class SecurityBcryptService implements SecurityService {
     private readonly jwtSecret: string;
@@ -21,20 +22,33 @@ export class SecurityBcryptService implements SecurityService {
     async comparePasswords(incomingPassword: string, userPassword: string) {
         const isMatch = await bcrypt.compare(incomingPassword, userPassword);
 
+        if (!isMatch) {
+            throw new UnauthorizedError('Password is not valid');
+        }
+
         return isMatch;
     }
 
     generateJWT(user: User): string {
-        const token = jwt.sign({ userId: user.id }, this.jwtSecret, {
-            expiresIn: '1h',
-        });
+        try {
+            const token = jwt.sign({ userId: user.id }, this.jwtSecret, {
+                expiresIn: '1h',
+            });
 
-        return token;
+            return token;
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'jwt.sign error';
+            throw new UnauthorizedError(`Error generating JWT: ${errorMessage}`);
+        }
     }
 
     verifyJWT(token: string): { userId: string } {
-        const data = jwt.verify(token, this.jwtSecret) as { userId: string };
-
-        return data;
+        try {
+            const data = jwt.verify(token, this.jwtSecret) as { userId: string };
+            return data;
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'jwt.verify error';
+            throw new UnauthorizedError(`Error verifying JWT: ${errorMessage}`);
+        }
     }
 }
