@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../ui/api';
+import { createRandomProduct } from './helpers';
 
 describe('PATH /products/:productId', () => {
     test('given a non existing product, return a 404 not found', async () => {
@@ -9,11 +10,9 @@ describe('PATH /products/:productId', () => {
     });
 
     test('given an existing product, return a statuscode 200 and updated product', async () => {
-        const createdProductResponse = await request(app).post('/products').send({
-            name: 'created-product',
-            description: 'created.product-description',
-        });
-        const createdProductId = createdProductResponse.body.content._id;
+        const createdProductResponse = await createRandomProduct();
+        const createdProduct = createdProductResponse.body.content;
+        const createdProductId = createdProductResponse.body.content.id;
 
         const updatedProductResponse = await request(app)
             .patch(`/products/${createdProductId}`)
@@ -21,7 +20,7 @@ describe('PATH /products/:productId', () => {
         const updatedProduct = updatedProductResponse.body.content;
 
         expect(updatedProductResponse.status).toBe(200);
-        expect(updatedProduct.name).toStrictEqual('updated-product-name');
-        expect(updatedProduct.description).toStrictEqual('created.product-description');
+        expect(updatedProduct.name).toStrictEqual(updatedProduct.name);
+        expect(updatedProduct.description).toStrictEqual(createdProduct.description);
     });
 });

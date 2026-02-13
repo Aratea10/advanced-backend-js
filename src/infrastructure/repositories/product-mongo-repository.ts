@@ -1,5 +1,6 @@
 import { Product } from '../../domain/entities/Product';
 import { ProductRepository } from '../../domain/repositories/ProductRepository';
+import { ProductUpdateQuery } from '../../domain/types/product/ProductUpdateQuery';
 import { ProductModel } from '../models/product-model';
 
 export class ProductMongodbRepository implements ProductRepository {
@@ -44,6 +45,23 @@ export class ProductMongodbRepository implements ProductRepository {
                 name: productDb.name,
                 description: productDb.description,
                 createdAt: productDb.createdAt,
+            });
+        }
+    }
+
+    async updateOne(productId: string, query: ProductUpdateQuery): Promise<Product | null> {
+        const updatedProduct = await ProductModel.findByIdAndUpdate(productId, query, {
+            new: true,
+        });
+
+        if (!updatedProduct) {
+            return null;
+        } else {
+            return new Product({
+                id: updatedProduct._id.toString(),
+                name: updatedProduct.name,
+                description: updatedProduct.description,
+                createdAt: updatedProduct.createdAt,
             });
         }
     }
