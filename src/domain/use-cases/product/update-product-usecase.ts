@@ -9,9 +9,23 @@ export class UpdateProductUseCase {
         this.productRepository = productRepository;
     }
 
-    async execute(productId: string, query: ProductUpdateQuery): Promise<Product | null> {
-        const createdProduct = await this.productRepository.updateOne(productId, query);
+    async execute(
+        productId: string,
+        query: ProductUpdateQuery,
+        userId: string
+    ): Promise<Product | null> {
+        const productToUpdate = await this.productRepository.findById(productId);
 
-        return createdProduct;
+        if (!productToUpdate) {
+            throw new Error('product not found');
+        }
+
+        if (userId === productToUpdate.ownerId) {
+            const createdProduct = await this.productRepository.updateOne(productId, query);
+
+            return createdProduct;
+        } else {
+            throw new Error('Forbidden operation');
+        }
     }
 }
