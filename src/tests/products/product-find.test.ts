@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../ui/api';
+import { createRandomProduct } from './helpers';
 
 describe('GET /products/:id', () => {
     test('Should return a 404 if product does not exist', async () => {
@@ -13,12 +14,10 @@ describe('GET /products/:id', () => {
 
     test('Given an existing product, return it', async () => {
         // tengo que crear un producto y guardarme su id
-        const createdProductResponse = await request(app).post('/products').send({
-            name: 'iPhone 17',
-            description: 'poco uso',
-        });
+        const createdProductResponse = await createRandomProduct();
 
-        const productId = createdProductResponse.body.content._id;
+        const createdProduct = createdProductResponse.body.content;
+        const productId = createdProduct.id;
         // petición de ese producto
         const response = await request(app).get(`/products/${productId}`).send();
 
@@ -26,8 +25,8 @@ describe('GET /products/:id', () => {
         expect(response.status).toBe(200);
         expect(response.body).toMatchObject({
             content: {
-                name: 'iPhone 17',
-                description: 'poco uso',
+                name: createdProduct.name,
+                description: createdProduct.description,
             },
         });
     });

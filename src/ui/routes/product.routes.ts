@@ -2,25 +2,12 @@ import express from 'express';
 import { ProductModel } from '../../infrastructure/models/product-model';
 import { createProductcontroller } from '../controllers/product/create-product-controller';
 import { findProductsController } from '../controllers/product/find-products-controller';
+import { findProductByIdController } from '../controllers/product/find-product-by-id-controller';
 
 const productRouter = express.Router();
 
 productRouter.get('/', findProductsController);
-
-productRouter.get('/:productId', async (request, response) => {
-    const { productId } = request.params;
-
-    const product = await ProductModel.findById(productId);
-
-    if (product) {
-        response.json({ content: product });
-    } else {
-        response.status(404).json({
-            message: 'Product not found',
-        });
-    }
-});
-
+productRouter.get('/:productId', findProductByIdController);
 productRouter.post('/', createProductcontroller);
 
 productRouter.patch('/:productId', async (request, response) => {

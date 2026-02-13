@@ -32,4 +32,19 @@ export class ProductMongodbRepository implements ProductRepository {
                 })
         );
     }
+
+    async findById(productId: string): Promise<Product | null> {
+        const productDb = await ProductModel.findById(productId);
+
+        if (!productDb) {
+            return null;
+        } else {
+            return new Product({
+                id: productDb._id.toString(),
+                name: productDb.name,
+                description: productDb.description,
+                createdAt: productDb.createdAt,
+            });
+        }
+    }
 }
