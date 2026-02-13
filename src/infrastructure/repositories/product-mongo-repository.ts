@@ -1,37 +1,26 @@
 import { Product } from '../../domain/entities/Product';
 import { ProductRepository } from '../../domain/repositories/ProductRepository';
+import { ProductCreationQuery } from '../../domain/types/product/ProductCreationQuery';
 import { ProductUpdateQuery } from '../../domain/types/product/ProductUpdateQuery';
-import { ProductModel } from '../models/product-model';
+import { ProductModel, ProductMongoDb } from '../models/product-model';
 
 export class ProductMongodbRepository implements ProductRepository {
-    async createOne({ name, description }: { name: string; description: string }) {
+    async createOne({ name, description, userId }: ProductCreationQuery) {
         const newProduct = new ProductModel({
             name,
             description,
+            ownerId: userId,
         });
 
         const createdProduct = await newProduct.save();
 
-        return new Product({
-            id: createdProduct._id.toString(),
-            name: createdProduct.name,
-            description: createdProduct.description,
-            createdAt: createdProduct.createdAt,
-        });
+        return this.restoreProduct(createdProduct);
     }
 
     async findMany(): Promise<Product[]> {
         const mongoProducts = await ProductModel.find();
 
-        return mongoProducts.map(
-            mongoProduct =>
-                new Product({
-                    id: mongoProduct._id.toString(),
-                    name: mongoProduct.name,
-                    description: mongoProduct.description,
-                    createdAt: mongoProduct.createdAt,
-                })
-        );
+        return mongoProducts.map(mongoProduct => this.restoreProduct(mongoProduct));
     }
 
     async findById(productId: string): Promise<Product | null> {
@@ -40,12 +29,7 @@ export class ProductMongodbRepository implements ProductRepository {
         if (!productDb) {
             return null;
         } else {
-            return new Product({
-                id: productDb._id.toString(),
-                name: productDb.name,
-                description: productDb.description,
-                createdAt: productDb.createdAt,
-            });
+            return this.restoreProduct(productDb);
         }
     }
 
@@ -57,12 +41,7 @@ export class ProductMongodbRepository implements ProductRepository {
         if (!updatedProduct) {
             return null;
         } else {
-            return new Product({
-                id: updatedProduct._id.toString(),
-                name: updatedProduct.name,
-                description: updatedProduct.description,
-                createdAt: updatedProduct.createdAt,
-            });
+            return this.restoreProduct(updatedProduct);
         }
     }
 
@@ -70,5 +49,15 @@ export class ProductMongodbRepository implements ProductRepository {
         const deletedProduct = await ProductModel.findByIdAndDelete(productId);
 
         return deletedProduct ? true : false;
+    }
+
+    private restoreProduct(productDb: ProductMongoDb): Product {
+        return new Product({
+            id: productDb._id.toString(),
+            ownerId: productDb.ownerId.toString(),
+            name: productDb.name,
+            description: productDb.description,
+            createdAt: productDb.createdAt,
+        });
     }
 }

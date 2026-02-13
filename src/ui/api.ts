@@ -1,6 +1,17 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import express from 'express';
 import productRouter from './routes/product-routes';
 import authenticationRouter from './routes/authentication-routes';
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: {
+                id: string;
+            };
+        }
+    }
+}
 
 export const app = express();
 app.use(express.json());

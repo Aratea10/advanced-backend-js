@@ -4,12 +4,13 @@ import { findProductsController } from '../controllers/product/find-products-con
 import { findProductByIdController } from '../controllers/product/find-product-by-id-controller';
 import { updateProductController } from '../controllers/product/update-product-controller';
 import { removeProductcontroller } from '../controllers/product/remove-product-controller';
+import { authenticationMiddleware } from '../middlewares/authentication-middleware';
 
 const productRouter = express.Router();
 
 productRouter.get('/', findProductsController);
 productRouter.get('/:productId', findProductByIdController);
-productRouter.post('/', createProductcontroller);
+productRouter.post('/', [authenticationMiddleware], createProductcontroller);
 productRouter.patch('/:productId', updateProductController);
 productRouter.delete('/:productId', removeProductcontroller);
 

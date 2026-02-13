@@ -25,4 +25,10 @@ export class SecurityBcryptService implements SecurityService {
 
         return token;
     }
+
+    verifyJWT(token: string): { userId: string } {
+        const data = jwt.verify(token, this.jwtSecret) as { userId: string };
+
+        return data;
+    }
 }
