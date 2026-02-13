@@ -9,7 +9,7 @@ export const removeProductcontroller = async (request: Request, response: Respon
     const removeProductUseCase = new RemoveProductUseCase(productMongoRepository);
 
     try {
-        await removeProductUseCase.execute(productId as string);
+        await removeProductUseCase.execute(productId as string, request.user?.id as string);
         response.json({
             message: 'Product removed succesful',
         });

@@ -6,11 +6,27 @@ export class RemoveProductUseCase {
         this.productRepository = productRepository;
     }
 
-    async execute(productId: string) {
-        const isRemoved = await this.productRepository.removeById(productId);
+    async execute(productId: string, userId: string) {
+        // es el usuario que hace la petición
+        // el mismo que ha creado el producto?
+        // sí -> lo borro
+        // no -> Error
 
-        if (!isRemoved) {
-            throw new Error('Product can not be removed');
+        // necesitamos el product que tenemos que borrar de la db
+        const productToRemove = await this.productRepository.findById(productId);
+        if (!productToRemove) {
+            throw new Error('Product not found');
+        }
+
+        if (userId === productToRemove.ownerId) {
+            // borramos
+            const isRemoved = await this.productRepository.removeById(productId);
+
+            if (!isRemoved) {
+                throw new Error('Product can not be removed');
+            }
+        } else {
+            throw new Error('Forbidden operation');
         }
     }
 }
