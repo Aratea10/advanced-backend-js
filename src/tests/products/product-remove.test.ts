@@ -63,6 +63,6 @@ describe('DELETE /product/:productId', () => {
             .set('Authorization', `Bearer ${token}`)
             .send();
 
-        expect(removeProductResponse.status).toBe(404);
+        expect(removeProductResponse.status).toBe(403);
     });
 });

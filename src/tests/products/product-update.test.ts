@@ -63,6 +63,6 @@ describe('PATH /products/:productId', () => {
             .set('Authorization', `Bearer ${token}`)
             .send({});
 
-        expect(updateProductResponse.status).toBe(404);
+        expect(updateProductResponse.status).toBe(403);
     });
 });

@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 
 describe('POST /authentication/signup', () => {
     test('Email and password should be mandatory', async () => {
-        const response = await request(app).post('/authentication/signup').send({});
+        const response = await request(app).post('/authentication/signup').send();
 
         expect(response.status).toBe(400);
     });

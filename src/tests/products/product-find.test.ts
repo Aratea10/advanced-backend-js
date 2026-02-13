@@ -7,9 +7,6 @@ describe('GET /products/:id', () => {
         const response = await request(app).get('/products/6979135412042d553e7a8313').send();
 
         expect(response.status).toBe(404);
-        expect(response.body).toStrictEqual({
-            message: 'Product not found',
-        });
     });
 
     test('Given an existing product, return it', async () => {

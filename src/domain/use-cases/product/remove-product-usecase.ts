@@ -1,4 +1,5 @@
 import { ProductRepository } from '../../repositories/ProductRepository';
+import { EntityNotFoundError, ForbiddenOperationError } from '../../types/errors';
 
 export class RemoveProductUseCase {
     readonly productRepository: ProductRepository;
@@ -15,7 +16,7 @@ export class RemoveProductUseCase {
         // necesitamos el product que tenemos que borrar de la db
         const productToRemove = await this.productRepository.findById(productId);
         if (!productToRemove) {
-            throw new Error('Product not found');
+            throw new EntityNotFoundError('Product', productId);
         }
 
         if (userId === productToRemove.ownerId) {
@@ -23,10 +24,10 @@ export class RemoveProductUseCase {
             const isRemoved = await this.productRepository.removeById(productId);
 
             if (!isRemoved) {
-                throw new Error('Product can not be removed');
+                throw new EntityNotFoundError('Product', productId);
             }
         } else {
-            throw new Error('Forbidden operation');
+            throw new ForbiddenOperationError('Only owners can remove their products');
         }
     }
 }
