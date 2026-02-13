@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsx watch src/server.js",
     "lint": "eslint src --ext .ts",
-    "prettier": "prettier --write src/**/*.ts",
+    "prettier": "prettier --write .",
     "build": "tsc",
     "test:e2e": "jest"
   },
