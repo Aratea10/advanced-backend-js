@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { FindProductsUseCase } from '../../../domain/use-cases/product/find-products-usecase';
 import { ProductMongodbRepository } from '../../../infrastructure/repositories/product-mongo-repository';
 import * as z from 'zod';
-import { MailtrapService } from '../../../infrastructure/services/email-service';
 
 const findProductsValidator = z.object({
     page: z.coerce.number(),
