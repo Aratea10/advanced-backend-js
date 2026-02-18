@@ -50,14 +50,10 @@ class EnvironmentService {
         switch (currentEnvironment) {
             case 'production':
                 return '.env.production';
-                break;
             case 'staging':
                 return '.env.staging';
-                break;
-
             default:
                 return '.env';
-                break;
         }
     }
 }
