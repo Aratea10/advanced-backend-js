@@ -20,9 +20,11 @@ export const errorHandlerMiddleware = (
     if (error instanceof DomainError) {
         const statusCode = domainErrorToHttpStatusCode[error.name];
         response.status(statusCode).json({ message: error.message });
+        return;
     } else if (error instanceof zod.ZodError) {
         const errorMessage = zod.flattenError(error).fieldErrors;
         response.status(status.BAD_REQUEST).json({ message: errorMessage });
+        return;
     } else {
         Sentry.captureException(error, {
             extra: {
