@@ -26,7 +26,7 @@ app.use(errorHandlerMiddleware);
 
 export const startHttpApi = () => {
     const { API_PORT } = environmentService.get();
-    app.listen(3000, () => {
+    app.listen(API_PORT, () => {
         console.log('API up & running on port: ', API_PORT);
     });
 };
